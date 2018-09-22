@@ -1,0 +1,73 @@
+namespace DIP
+{
+  public class Product
+  {
+    public double Cost { get; set; }
+    public String Name { get; set; }
+    public uint Count { get; set; }
+  }
+ 
+  public class Warehouse
+  {
+    public IEnumerable<Product> GetProducts()
+    {
+      return new List<Product>
+   {
+    new Product {Cost = 100, Name = "Tyres", Count = 1000},
+    new Product {Cost = 120, Name = "Disks", Count = 200},
+    new Product {Cost = 90, Name = "Alarms", Count = 500},
+    new Product {Cost = 150, Name = "Batteries", Count = 200},
+    new Product {Cost = 60, Name = "Tools", Count = 50}
+   };
+    }
+  }
+ 
+  public class DiscountScheme
+  {
+    public double GetDiscount(Product p)
+    {
+      if (p.Name == "Tyres")
+        return 0.01;
+      else if (p.Name == "Disks")
+        return 0.05;
+      else if (p.Name == "Alarms")
+        return 0.1;
+      else if (p.Name == "Batteries")
+        return 0.15;
+      else if (p.Name == "Tools")
+        return 0.1;
+      else
+        return 0;
+    }
+  }
+ 
+  public class ProductService
+  {
+    public double GetAllDiscount()
+    {
+      double sum = 0;
+ 
+      Warehouse wh = new Warehouse();
+ 
+      IEnumerable<Product> products = wh.GetProducts();
+ 
+      DiscountScheme ds = new DiscountScheme();
+ 
+      foreach(var p in products)
+        sum += p.Cost * p.Count * ds.GetDiscount(p);
+      
+      return sum;
+    }
+  }
+ 
+  class Program
+  {
+    static void Main(string[] args)
+    {
+      ProductService ps = new ProductService();
+      Console.WriteLine("Discount for all products = " + ps.GetAllDiscount());
+ 
+      Console.ReadKey();
+    }
+  }
+}
