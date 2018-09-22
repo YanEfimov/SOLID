@@ -1,0 +1,9 @@
+void DrawNerd(Nerd nerd) {
+  if (nerd.IsSelected)
+    DrawEllipseAroundNerd(nerd.Position, nerd.Radius);
+  if (nerd.Image != null)
+    DrawImageOfNerd(nerd.Image, nerd.Position, nerd.Heading);
+  if (nerd is IHasBelt) // редкий случай
+    DrawBelt(((IHasBelt)nerd).Belt);
+  // И т. д.
+}
